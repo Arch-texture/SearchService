@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "XJhMwMbiIY+B/lAqULJTKhXt7v94ZkkwMTPwEIIod7Q=",
+  "Source": "searchService",
+  "BasePath": "_content/searchService",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
