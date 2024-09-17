@@ -31,5 +31,18 @@ namespace searchService.Controllers
             return Ok(student);
         }
 
+        [HttpGet("searchByRestriction/{keyboardEnter}")]
+        public async Task<IActionResult> SearchByRestriction(string keyboardEnter)
+        {
+            var student = await _searchService.SearchByRestriction(keyboardEnter);
+
+            if (student == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(student);
+        }
+
     }
 }

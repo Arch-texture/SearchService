@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -51,6 +52,16 @@ namespace searchService.Services
         {
             var filter = Builders<Restriction>.Filter.Eq("UUID", UUID);
             await _restrictionCollection.DeleteOneAsync(filter);
+        }
+
+        public async Task<List<Restriction>> GetRestrictionByNameAsync(string name){
+            var filter = Builders<Restriction>.Filter.Regex("Reason", new BsonRegularExpression(new Regex(name, RegexOptions.IgnoreCase)));
+            return await _restrictionCollection.Find(filter).ToListAsync();
+        }
+
+        public async Task<List<Restriction>> GetRestrictionByUUIDAsync(string uuid){
+            var filter = Builders<Restriction>.Filter.Regex("UUID", new BsonRegularExpression(uuid, "i"));
+            return await _restrictionCollection.Find(filter).ToListAsync();
         }
     }
 }
