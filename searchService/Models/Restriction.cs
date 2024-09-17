@@ -15,5 +15,6 @@ namespace searchService.Models
         [BsonRepresentation(BsonType.String)]
         public string UUID { get; set; } = null!;
         public string Reason { get; set; } = null!;
+        public DateTime CreationDate { get; set; }
     }
 }

@@ -7,6 +7,7 @@ using searchService.Data;
 using searchService.DTOs;
 using searchService.Models;
 using System.Text.RegularExpressions;
+using MongoDB.Bson;
 
 namespace searchService.Services
 {
@@ -31,6 +32,16 @@ namespace searchService.Services
 
         public async Task<Student> GetAsync(string id) =>
             await _students.Find<Student>(student => student.UUID == id).FirstOrDefaultAsync();
+        public async Task<List<Student>> GetStudentByNameAsync(string name){
+            var filter = Builders<Student>.Filter.Regex("Name", new BsonRegularExpression(new Regex(name, RegexOptions.IgnoreCase)));
+            return await _students.Find(filter).ToListAsync();
+        }
+
+        public async Task<List<Student>> GetStudentByUUIDAsync(string uuid){
+            var filter = Builders<Student>.Filter.Regex("UUID", new BsonRegularExpression(uuid, "i"));
+            return await _students.Find(filter).ToListAsync();
+        }
+            
 
         public async Task<Student> CreateAsync(Student student)
         {
@@ -66,6 +77,7 @@ namespace searchService.Services
                 var res = new Restriction();
                 res.UUID = restriction.restrictionUUID;
                 res.Reason = restriction.reason;
+                res.CreationDate = DateTime.Now;
                 stu.Restrictions.Add(res);
                 await _students.ReplaceOneAsync(student => student.UUID == studentUUID, stu);
             }

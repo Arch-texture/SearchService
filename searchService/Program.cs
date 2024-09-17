@@ -14,6 +14,7 @@ builder.Services.AddControllers();
 builder.Services.AddSingleton<StudentsService>();
 builder.Services.AddSingleton<GradesService>();
 builder.Services.AddSingleton<RestrictionService>();
+builder.Services.AddSingleton<SearchService>();
 
 
 // Add services to the container.
