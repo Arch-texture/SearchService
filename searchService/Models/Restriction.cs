@@ -10,7 +10,7 @@ namespace searchService.Models
     public class Restriction
     {
         [BsonId]
-       [BsonRepresentation(BsonType.ObjectId)]
+        [BsonRepresentation(BsonType.ObjectId)]
         public string? Id { get; set; }
         [BsonRepresentation(BsonType.String)]
         public string UUID { get; set; } = null!;

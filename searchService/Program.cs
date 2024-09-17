@@ -6,10 +6,15 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Register SearchServiceDatabaseSettings
 builder.Services.Configure<SearchServiceDatabaseSettings>(builder.Configuration.GetSection("SearchDatabase"));
+
+// Inject SearchServiceDatabaseSettings as a singleton
 builder.Services.AddSingleton(resolver => resolver.GetRequiredService<IOptions<SearchServiceDatabaseSettings>>().Value);
 
 builder.Services.AddControllers();
-builder.Services.AddScoped<StudentsService>();
+builder.Services.AddSingleton<StudentsService>();
+builder.Services.AddSingleton<GradesService>();
+builder.Services.AddSingleton<RestrictionService>();
+
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

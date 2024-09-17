@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("searchService")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ccda05bc78e2a6304ad1082a8b36a22e57a71215")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9998b91d77b4e5bddf9f039d9136bc2c8ff8b96b")]
 [assembly: System.Reflection.AssemblyProductAttribute("searchService")]
 [assembly: System.Reflection.AssemblyTitleAttribute("searchService")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

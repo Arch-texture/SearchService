@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using searchService.DTOs;
 using searchService.Models;
 using searchService.Services;
 
@@ -12,58 +13,46 @@ namespace searchService
     [Route("api/[controller]")]
     public class StudentController : ControllerBase
     {
-
         private readonly StudentsService _studentService;
 
         public StudentController(StudentsService studentService)
         {
             _studentService = studentService;
         }
-        
-        [HttpGet]
-        public ActionResult<List<Student>> Get() =>
-            _studentService.Get();
-        
-        [HttpGet("{UUID}", Name = "GetStudent")]
-        public ActionResult<Student> GetStudent(string UUID)
-        {
-            var student = _studentService.Get(UUID);
-
-            if (student == null)
-            {
-                return NotFound();
-            }
-
-            return student;
-        }
 
         [HttpPost]
-        public ActionResult<Student> Create(Student student)
+        public async Task<ActionResult<Student>> Create(Student student)
         {
-            _studentService.Create(student);
-
+            await _studentService.CreateAsync(student);
             return Ok(new { message = "Student created successfully" });
         }
 
-        [HttpPut("{UUID}")]
-        public IActionResult UpdateGrade(string UUID, Grade grade)
+        [HttpPut("AddGrade/{UUID}")]
+        public async Task<IActionResult> AddGrade(string UUID, AddGradeDTO grades)
         {
-            var student = _studentService.Get(UUID);
+            var student = await _studentService.GetAsync(UUID);
 
             if (student == null)
             {
                 return NotFound();
             }
 
-            _studentService.UpdateGrade(UUID, grade);
+            await _studentService.AddGradeAsync(UUID, grades);
 
             return Ok(new { message = "Student updated successfully" });
         }
 
-        [HttpDelete("{UUID}")]
-        public IActionResult Delete(string UUID)
+        [HttpPut("AddRestriction")]
+        public async Task<IActionResult> addRestriction(AddRestrictionDTO restriction)
         {
-            var student = _studentService.Get(UUID);
+            await _studentService.AddRestrictionAsync(restriction);
+
+            return Ok(new { message = "Students updated successfully" });
+        }
+        [HttpDelete("deleteStudent/{UUID}")]
+        public async Task<IActionResult> Delete(string UUID)
+        {
+            var student = await _studentService.GetAsync(UUID);
 
             if (student == null)
             {
@@ -73,6 +62,20 @@ namespace searchService
             _studentService.Remove(student);
 
             return Ok(new { message = "Student deleted successfully" });
+        }
+
+        [HttpDelete("deleteRestriction/{UUID}")]
+        public async Task<IActionResult> DeleteRestriction(string UUID)
+        {
+            try{
+                await _studentService.DeleteRestrictionToStudentAsync(UUID);
+                return Ok(new { message = "Tamos ok mi fan" });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+            
         }
     }
 
