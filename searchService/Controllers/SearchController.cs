@@ -44,5 +44,18 @@ namespace searchService.Controllers
             return Ok(student);
         }
 
+        [HttpGet("searchStudentByGrade/{min},{max}")]
+        public async Task<IActionResult> SearchStudentByGrade(float min,float max)
+        {
+            var student = await _searchService.SearchByGradeMinAndMax(min, max);
+
+            if (student == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(student);
+        }
+
     }
 }

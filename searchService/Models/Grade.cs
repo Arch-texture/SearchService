@@ -14,10 +14,10 @@ namespace searchService.Models
         public string? Id { get; set; }
         [BsonRepresentation(BsonType.String)]
         public string UUID { get; set; } = null!;
-        public int grade { get; set; } = 0!;
+        public float grade { get; set; } = 0!;
         public string gradeName { get; set; } = null!;
 
-        public Subject subject { get; set; } = null!;
+        public string subject { get; set; } = null!;
         public string comment { get; set; } = null!;
     }
 }

@@ -32,15 +32,23 @@ namespace searchService.Services
 
         public async Task<Student> GetAsync(string id) =>
             await _students.Find<Student>(student => student.UUID == id).FirstOrDefaultAsync();
-        public async Task<List<Student>> GetStudentByNameAsync(string name){
+        public async Task<List<Student>> GetStudentByNameAsync(string name)
+        {
             var filter = Builders<Student>.Filter.Regex("Name", new BsonRegularExpression(new Regex(name, RegexOptions.IgnoreCase)));
-            return await _students.Find(filter).ToListAsync();
+            var projection = Builders<Student>.Projection.Exclude("_id"); 
+            var students = await _students.Find(filter).Project<Student>(projection) .ToListAsync();
+            return students;
         }
 
-        public async Task<List<Student>> GetStudentByUUIDAsync(string uuid){
+
+        public async Task<List<Student>> GetStudentByUUIDAsync(string uuid)
+        {
             var filter = Builders<Student>.Filter.Regex("UUID", new BsonRegularExpression(uuid, "i"));
-            return await _students.Find(filter).ToListAsync();
+            var projection = Builders<Student>.Projection.Exclude("_id");
+            var students = await _students.Find(filter).Project<Student>(projection) .ToListAsync();
+            return students;
         }
+
             
 
         public async Task<Student> CreateAsync(Student student)
@@ -63,6 +71,7 @@ namespace searchService.Services
                 g.grade = grade.grade;
                 g.gradeName = grade.gradeName;
                 g.comment = grade.comment;
+                g.subject = grade.subjectName;
                 stu.Grades.Add(g);
                 await _gradesService.CreateAsync(g);
             }

@@ -88,5 +88,90 @@ namespace searchService.Services
             }
             return null;
         }
+
+        public async Task<List<SearchByGradeDTO>> SearchByGradeMinAndMax(float? min, float? max){
+            var allStudents = await _studentsService.GetAsync();
+            var response = new List<SearchByGradeDTO>();
+            if (min > 0 && min <= 7 && max > 0 && max <=7)
+            {
+                foreach (var student in allStudents)
+                {
+                    foreach (var grade in student.Grades)
+                    {
+                        if(grade.grade >= min && grade.grade <= max)
+                        {
+                            var studentGrade = new SearchByGradeDTO();
+                            studentGrade.grades = new List<GradeDTO>();
+                            studentGrade.UUIDStudent = student.UUID;
+                            studentGrade.Name = student.Name;
+                            studentGrade.LastName = student.LastName;
+                            studentGrade.Email = student.Email;
+                            var gradeDTO = new GradeDTO();
+                            gradeDTO.grade = grade.grade;
+                            gradeDTO.UUID = grade.UUID;
+                            gradeDTO.comment = grade.comment;
+                            gradeDTO.subjectName = grade.subject;
+                            gradeDTO.gradeName = grade.gradeName;
+                            studentGrade.grades.Add(gradeDTO);
+                            response.Add(studentGrade);
+                        }
+                    }
+                }
+                return response;
+            }
+            else if(min == 0 && max > 0 && max <=7){
+                 foreach (var student in allStudents)
+                {
+                    foreach (var grade in student.Grades)
+                    {
+                        if (grade.grade <= max)
+                        {
+                            var studentGrade = new SearchByGradeDTO();
+                            studentGrade.grades = new List<GradeDTO>();
+                            studentGrade.UUIDStudent = student.UUID;
+                            studentGrade.Name = student.Name;
+                            studentGrade.LastName = student.LastName;
+                            studentGrade.Email = student.Email;
+                            var gradeDTO = new GradeDTO();
+                            gradeDTO.grade = grade.grade;
+                            gradeDTO.UUID = grade.UUID;
+                            gradeDTO.comment = grade.comment;
+                            gradeDTO.subjectName = grade.subject;
+                            gradeDTO.gradeName = grade.gradeName;
+                            studentGrade.grades.Add(gradeDTO);
+                            response.Add(studentGrade);
+                        }
+                    }
+                }
+                return response;
+            }
+            else if(min > 0 && min <= 7 && max == 0){
+                 foreach (var student in allStudents)
+                {
+                    foreach (var grade in student.Grades)
+                    {
+                        if (grade.grade >= min)
+                        {
+                            var studentGrade = new SearchByGradeDTO();
+                            studentGrade.grades = new List<GradeDTO>();
+                            studentGrade.UUIDStudent = student.UUID;
+                            studentGrade.Name = student.Name;
+                            studentGrade.LastName = student.LastName;
+                            studentGrade.Email = student.Email;
+                            var gradeDTO = new GradeDTO();
+                            gradeDTO.grade = grade.grade;
+                            gradeDTO.UUID = grade.UUID;
+                            gradeDTO.comment = grade.comment;
+                            gradeDTO.subjectName = grade.subject;
+                            gradeDTO.gradeName = grade.gradeName;
+                            studentGrade.grades.Add(gradeDTO);
+                            response.Add(studentGrade);
+                        }
+                    }
+                }
+                return response;
+            }
+            return null;
     }
+}
 }
