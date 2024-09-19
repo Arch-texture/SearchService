@@ -27,7 +27,7 @@ namespace searchService.Services
                 return studentsByName;
             }
             var studentByUUID = await _studentsService.GetStudentByUUIDAsync(keyboardEnter);
-            if(studentByUUID != null)
+            if(studentByUUID.Count > 0)
             {
                 return studentByUUID;
             }
@@ -37,9 +37,10 @@ namespace searchService.Services
 
         public async Task<List<StudentRestrictionDTO>> SearchByRestriction(string keyboardEnter){
             var restrictionByName = await _restrictionsService.GetRestrictionByNameAsync(keyboardEnter);
+            var response =  new List<StudentRestrictionDTO>();
+            var response2 =  new List<StudentRestrictionDTO>();
             if(restrictionByName.Count > 0){
                 var allStudents = await _studentsService.GetAsync();
-                var response =  new List<StudentRestrictionDTO>();
 
                 foreach (var restriction in restrictionByName)
                 {
@@ -59,12 +60,10 @@ namespace searchService.Services
                         }
                     }
                 }
-                return response;
             }
             var restrictionByUUID = await _restrictionsService.GetRestrictionByUUIDAsync(keyboardEnter);
             if(restrictionByUUID.Count > 0){
                 var allStudents = await _studentsService.GetAsync();
-                var response =  new List<StudentRestrictionDTO>();
 
                 foreach (var restriction in restrictionByUUID)
                 {
@@ -80,18 +79,28 @@ namespace searchService.Services
                             studentRestriction.UUIDRestriction = restriction.UUID;
                             studentRestriction.Reason = restriction.Reason;
                             studentRestriction.CreationDate = restriction.CreationDate;
-                            response.Add(studentRestriction);
+                            response2.Add(studentRestriction);
                         }
                     }
                 }
+            }
+            if(response.Count > 0)
+            {
                 return response;
+            }
+            if(response2.Count > 0)
+            {
+                return response2;
             }
             return null;
         }
 
         public async Task<List<SearchByGradeDTO>> SearchByGradeMinAndMax(float? min, float? max){
             var allStudents = await _studentsService.GetAsync();
-            var response = new List<SearchByGradeDTO>();
+            var response1 = new List<SearchByGradeDTO>();
+            var response2 = new List<SearchByGradeDTO>();
+            var response3 = new List<SearchByGradeDTO>();
+
             if (min > 0 && min <= 7 && max > 0 && max <=7)
             {
                 foreach (var student in allStudents)
@@ -113,11 +122,10 @@ namespace searchService.Services
                             gradeDTO.subjectName = grade.subject;
                             gradeDTO.gradeName = grade.gradeName;
                             studentGrade.grades.Add(gradeDTO);
-                            response.Add(studentGrade);
+                            response1.Add(studentGrade);
                         }
                     }
                 }
-                return response;
             }
             else if(min == 0 && max > 0 && max <=7){
                  foreach (var student in allStudents)
@@ -139,11 +147,10 @@ namespace searchService.Services
                             gradeDTO.subjectName = grade.subject;
                             gradeDTO.gradeName = grade.gradeName;
                             studentGrade.grades.Add(gradeDTO);
-                            response.Add(studentGrade);
+                            response2.Add(studentGrade);
                         }
                     }
                 }
-                return response;
             }
             else if(min > 0 && min <= 7 && max == 0){
                  foreach (var student in allStudents)
@@ -165,11 +172,22 @@ namespace searchService.Services
                             gradeDTO.subjectName = grade.subject;
                             gradeDTO.gradeName = grade.gradeName;
                             studentGrade.grades.Add(gradeDTO);
-                            response.Add(studentGrade);
+                            response3.Add(studentGrade);
                         }
                     }
                 }
-                return response;
+            }
+            if(response1.Count > 0)
+            {
+                return response1;
+            }
+            if(response2.Count > 0)
+            {
+                return response2;
+            }
+            if(response3.Count > 0)
+            {
+                return response3;
             }
             return null;
     }
